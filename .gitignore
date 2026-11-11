@@ -1,0 +1,18 @@
+# Ambiente virtual
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Manim
+media/
+
+# VS Code
+.vscode/
+
+# Sistema operacional
+.DS_Store
+
+# Vídeos renderizados
+exports/
