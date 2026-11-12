@@ -1,0 +1,1 @@
+uv run manim -pql src/manim_codes/scenes/questoes/composicao_velocidades_aviao/main.py ComposicaoVelocidadesAviao
