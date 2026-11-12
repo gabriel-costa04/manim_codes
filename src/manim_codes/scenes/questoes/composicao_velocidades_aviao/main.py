@@ -1,6 +1,6 @@
 from manim import *
 
-from manim_codes.config.layout import HEADER_CENTER
+from manim_codes.config.layout import TEXT_MAX_WIDTH, place_in_safe_area
 from manim_codes.config.theme import BACKGROUND, IVORY
 
 try:
@@ -75,12 +75,15 @@ class ComposicaoVelocidadesAviao(ThreeDScene):
             )
 
         def caption(text, size=32):
-            return Text(
+            caption_obj = Text(
                 text,
                 font_size=size,
                 color=IVORY,
                 weight=BOLD,
-            ).move_to(HEADER_CENTER)
+            )
+            target_width = TEXT_MAX_WIDTH * 0.72
+            caption_obj.scale_to_fit_width(target_width)
+            return place_in_safe_area(caption_obj, x_pct=50, y_pct=12, area="content")
 
         def equation(tex, size=35):
             return MathTex(

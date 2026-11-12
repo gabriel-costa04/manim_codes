@@ -1,6 +1,6 @@
 from manim import *
 
-from manim_codes.config.layout import safe_point
+from manim_codes.config.layout import place_in_safe_area
 from manim_codes.config.theme import GREEN, ORANGE
 
 
@@ -18,7 +18,7 @@ def build_vento_e_composicao(scene):
         r"(30,\ -20,\ -1)\ \mathrm{km/h}",
         size=32,
     )
-    wind_formula.move_to(safe_point(50, 24))
+    place_in_safe_area(wind_formula, x_pct=50, y_pct=24, area="content")
     scene.add_fixed_in_frame_mobjects(wind_formula)
     scene.play(Write(wind_formula), run_time=0.8)
 
@@ -28,7 +28,7 @@ def build_vento_e_composicao(scene):
         scene.equation(r"-1\ \mathrm{km/h}\quad\mathrm{Baixo}", size=27),
     )
     wind_components.arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-    wind_components.move_to(safe_point(40, 52))
+    place_in_safe_area(wind_components, x_pct=40, y_pct=52, area="content")
     scene.add_fixed_in_frame_mobjects(wind_components)
     scene.play(FadeIn(wind_components), run_time=0.8)
     scene.wait(0.8)
@@ -44,7 +44,7 @@ def build_vento_e_composicao(scene):
         r"\vec v_{\mathrm{ar/solo}}",
         size=31,
     )
-    equation_sum.move_to(safe_point(50, 22))
+    place_in_safe_area(equation_sum, x_pct=50, y_pct=22, area="content")
     scene.add_fixed_in_frame_mobjects(equation_sum)
     scene.play(Write(equation_sum), run_time=1)
     scene.wait(0.7)
@@ -65,7 +65,7 @@ def build_vento_e_composicao(scene):
         scene.equation(r"v_z=10-(-1)=11", size=31),
     )
     calculations.arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-    calculations.move_to(safe_point(38, 50))
+    place_in_safe_area(calculations, x_pct=38, y_pct=50, area="content")
     scene.add_fixed_in_frame_mobjects(calculations)
     scene.play(FadeIn(calculations), run_time=1)
     scene.wait(1)

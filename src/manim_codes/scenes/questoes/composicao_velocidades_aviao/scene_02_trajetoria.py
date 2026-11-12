@@ -1,6 +1,6 @@
 from manim import *
 
-from manim_codes.config.layout import safe_point
+from manim_codes.config.layout import place_in_safe_area
 from manim_codes.config.theme import BLUE, GREEN, IVORY, ORANGE
 
 
@@ -51,7 +51,7 @@ def build_trajetoria(scene):
         Text("1 km acima", font_size=24, color=ORANGE),
     )
     distances.arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-    distances.move_to(safe_point(24, 82))
+    place_in_safe_area(distances, x_pct=24, y_pct=82, area="content")
 
     scene.add_fixed_in_frame_mobjects(distances)
     scene.distances = distances
@@ -61,7 +61,8 @@ def build_trajetoria(scene):
         font_size=27,
         color=IVORY,
         weight=BOLD,
-    ).move_to(safe_point(48, 12))
+    )
+    place_in_safe_area(time_label, x_pct=48, y_pct=12, area="content")
 
     scene.add_fixed_in_frame_mobjects(time_label)
     scene.time_label = time_label

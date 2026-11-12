@@ -467,3 +467,22 @@ Antes de considerar qualquer animação pronta, verificar:
 - [ ] Os problemas encontrados foram corrigidos.
 
 **Regra final: nenhuma animação deve ser considerada concluída sem inspeção do vídeo renderizado. A ausência de erros no código não garante a qualidade visual do resultado.**
+
+---
+
+## 14. Sistema obrigatório de posicionamento seguro
+
+Todos os textos, equações, títulos, legendas e objetos fixos na tela devem utilizar o sistema centralizado em `src/manim_codes/config/layout.py`, em vez de posicionamentos arbitrários.
+
+Regras obrigatórias:
+
+1. Usar `safe_point()` apenas para pontos dentro da área segura física.
+2. Usar `safe_region_point()` para distribuir itens em regiões de cabeçalho, conteúdo e legenda.
+3. Usar `place_in_safe_area()` para posicionar objetos considerando sua bounding box real.
+4. Usar `validate_object_in_area()` durante o desenvolvimento para verificar se o objeto inteiro permanece dentro da área permitida.
+5. Respeitar a área de conteúdo, que adiciona margem interna extra além dos limites físicos medidos.
+6. Não usar `.to_edge(UP)`, `.to_edge(DOWN)`, `.move_to(ORIGIN)` ou posicionamentos ad hoc para textos sem justificativa explícita.
+7. Para objetos fixos em `ThreeDScene`, manter o texto na tela com `add_fixed_in_frame_mobjects()` e aplicar o sistema seguro antes do `play()`.
+8. Não confiar apenas no centro do objeto: verificar a caixa delimitadora completa do texto ou equação.
+
+Sempre que um item visual puder sair da área segura, o desenvolvimento deve validar a posição do objeto antes de considerar o resultado final.
