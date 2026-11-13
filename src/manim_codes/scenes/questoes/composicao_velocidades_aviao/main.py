@@ -83,7 +83,7 @@ class ComposicaoVelocidadesAviao(ThreeDScene):
             )
             target_width = TEXT_MAX_WIDTH * 0.72
             caption_obj.scale_to_fit_width(target_width)
-            return place_in_safe_area(caption_obj, x_pct=50, y_pct=12, area="content")
+            return place_in_safe_area(caption_obj, x_pct=50, y_pct=6, area="text")
 
         def equation(tex, size=35):
             return MathTex(
@@ -104,6 +104,7 @@ class ComposicaoVelocidadesAviao(ThreeDScene):
 
         def hide_caption(obj):
             self.play(FadeOut(obj), run_time=0.35)
+            self.remove_fixed_in_frame_mobjects(obj)
 
         self.show_caption = show_caption
         self.hide_caption = hide_caption
@@ -112,7 +113,7 @@ class ComposicaoVelocidadesAviao(ThreeDScene):
         build_trajetoria(self)
         build_velocidade_desejada(self)
         build_vento_e_composicao(self)
-        build_conclusao(self)
+        # build_conclusao(self)
 
 
 if __name__ == "__main__":

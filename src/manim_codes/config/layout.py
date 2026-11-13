@@ -53,6 +53,20 @@ CONTENT_Y_MIN_PX = SAFE_Y_MIN_PX + CONTENT_MARGIN_TOP_PX
 CONTENT_Y_MAX_PX = SAFE_Y_MAX_PX - CONTENT_MARGIN_BOTTOM_PX
 
 # ============================================================
+# MARGEM DA ÁREA DE TEXTOS E EQUAÇÕES
+# ============================================================
+
+TEXT_MARGIN_LEFT_PX = 60
+TEXT_MARGIN_RIGHT_PX = 60
+
+TEXT_X_MIN_PX = TEXT_MARGIN_LEFT_PX
+TEXT_X_MAX_PX = PIXEL_WIDTH - TEXT_MARGIN_RIGHT_PX
+
+# Mantém os mesmos limites verticais da área de conteúdo.
+TEXT_Y_MIN_PX = CONTENT_Y_MIN_PX
+TEXT_Y_MAX_PX = CONTENT_Y_MAX_PX
+
+# ============================================================
 # CONVERSÃO PIXEL -> MANIM
 # ============================================================
 
@@ -120,6 +134,17 @@ CONTENT_HEIGHT = CONTENT_HEIGHT_PX * PIXEL_TO_UNIT_Y
 CONTENT_CENTER = pixel_to_point(
     (CONTENT_X_MIN_PX + CONTENT_X_MAX_PX) / 2,
     (CONTENT_Y_MIN_PX + CONTENT_Y_MAX_PX) / 2,
+)
+
+TEXT_WIDTH_PX = TEXT_X_MAX_PX - TEXT_X_MIN_PX
+TEXT_HEIGHT_PX = TEXT_Y_MAX_PX - TEXT_Y_MIN_PX
+
+TEXT_WIDTH = TEXT_WIDTH_PX * PIXEL_TO_UNIT_X
+TEXT_HEIGHT = TEXT_HEIGHT_PX * PIXEL_TO_UNIT_Y
+
+TEXT_CENTER = pixel_to_point(
+    (TEXT_X_MIN_PX + TEXT_X_MAX_PX) / 2,
+    (TEXT_Y_MIN_PX + TEXT_Y_MAX_PX) / 2,
 )
 
 # ============================================================
@@ -195,11 +220,14 @@ def validate_object_in_area(mobj, *, area: str = "content", padding: float = 0, 
     if area == "safe":
         x_min_px, x_max_px = SAFE_X_MIN_PX + padding, SAFE_X_MAX_PX - padding
         y_min_px, y_max_px = SAFE_Y_MIN_PX + padding, SAFE_Y_MAX_PX - padding
+    elif area == "text":
+        x_min_px, x_max_px = TEXT_X_MIN_PX + padding, TEXT_X_MAX_PX - padding
+        y_min_px, y_max_px = TEXT_Y_MIN_PX + padding, TEXT_Y_MAX_PX - padding
     elif area == "content":
         x_min_px, x_max_px = CONTENT_X_MIN_PX + padding, CONTENT_X_MAX_PX - padding
         y_min_px, y_max_px = CONTENT_Y_MIN_PX + padding, CONTENT_Y_MAX_PX - padding
     else:
-        raise ValueError("area deve ser 'safe' ou 'content'.")
+        raise ValueError("area deve ser 'safe', 'content' ou 'text'.")
 
     left, right, bottom, top = object_bounds_px(mobj)
     inside = left >= x_min_px and right <= x_max_px and bottom >= y_min_px and top <= y_max_px
@@ -225,11 +253,14 @@ def place_in_safe_area(mobj, x_pct: float = 50, y_pct: float = 50, *, area: str 
     if area == "safe":
         x_min_px, x_max_px = SAFE_X_MIN_PX + padding, SAFE_X_MAX_PX - padding
         y_min_px, y_max_px = SAFE_Y_MIN_PX + padding, SAFE_Y_MAX_PX - padding
+    elif area == "text":
+        x_min_px, x_max_px = TEXT_X_MIN_PX + padding, TEXT_X_MAX_PX - padding
+        y_min_px, y_max_px = TEXT_Y_MIN_PX + padding, TEXT_Y_MAX_PX - padding
     elif area == "content":
         x_min_px, x_max_px = CONTENT_X_MIN_PX + padding, CONTENT_X_MAX_PX - padding
         y_min_px, y_max_px = CONTENT_Y_MIN_PX + padding, CONTENT_Y_MAX_PX - padding
     else:
-        raise ValueError("area deve ser 'safe' ou 'content'.")
+        raise ValueError("area deve ser 'safe', 'content' ou 'text'.")
 
     target_x_px = x_min_px + x_pct / 100 * (x_max_px - x_min_px)
     target_y_px = y_min_px + y_pct / 100 * (y_max_px - y_min_px)
@@ -265,6 +296,30 @@ def place_in_safe_area(mobj, x_pct: float = 50, y_pct: float = 50, *, area: str 
 
     return mobj
 
+def place_in_text_area(
+    mobj,
+    x_pct: float = 50,
+    y_pct: float = 50,
+    *,
+    padding: float = 0,
+    warn: bool = True,
+):
+    """
+    Posiciona textos e equações dentro da área específica para texto.
+
+    As margens laterais são simétricas e curtas.
+    Os limites verticais são os mesmos da área de conteúdo.
+    """
+
+    return place_in_safe_area(
+        mobj,
+        x_pct=x_pct,
+        y_pct=y_pct,
+        area="text",
+        padding=padding,
+        warn=warn,
+    )
+
 
 # ============================================================
 # CENTROS E DIMENSÕES ÚTEIS
@@ -288,7 +343,7 @@ MAIN_CENTER = safe_region_point(50, 50, MAIN_TOP, MAIN_BOTTOM)
 CAPTION_CENTER = safe_region_point(50, 50, CAPTION_TOP, CAPTION_BOTTOM)
 
 # Largura máxima recomendada para textos.
-TEXT_MAX_WIDTH = CONTENT_WIDTH * 0.95
+TEXT_MAX_WIDTH = TEXT_WIDTH * 0.95
 
 HEADER_HEIGHT = SAFE_HEIGHT * (HEADER_BOTTOM - HEADER_TOP) / 100
 MAIN_HEIGHT = SAFE_HEIGHT * (MAIN_BOTTOM - MAIN_TOP) / 100
@@ -346,3 +401,4 @@ def zone_guide():
         zones.add(rect)
 
     return zones
+

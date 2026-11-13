@@ -17,19 +17,29 @@ def build_trajetoria(scene):
     title = scene.show_caption("A trajetória desejada")
 
     destination = scene.axes.c2p(3.6, 3.6, 1.5)
-    displacement = Arrow3D(
-        start=scene.origin,
-        end=destination,
-        color=IVORY,
-        thickness=0.04,
+    displacement = Sphere(
+        radius=0.08,
+        color=ORANGE,
+        resolution=(12, 12),
+    )
+
+    displacement.move_to(
+        scene.axes.c2p(3.6, 3.6, 1.5)
     )
 
     scene.play(FadeIn(displacement), run_time=1.5)
 
+    scene.play(
+    displacement.animate.scale(1.3),
+    rate_func=there_and_back,
+    run_time=0.8,
+)
+
     p_x = scene.axes.c2p(3.6, 0, 0)
+    p_y = scene.axes.c2p(0, 3.6, 0)
     p_xy = scene.axes.c2p(3.6, 3.6, 0)
 
-    component_x = DashedLine(scene.origin, p_x, color=BLUE, stroke_width=4)
+    component_x = DashedLine(p_y, p_xy, color=BLUE, stroke_width=4)
     component_y = DashedLine(p_x, p_xy, color=GREEN, stroke_width=4)
     component_z = DashedLine(p_xy, destination, color=ORANGE, stroke_width=4)
 
@@ -62,7 +72,7 @@ def build_trajetoria(scene):
         color=IVORY,
         weight=BOLD,
     )
-    place_in_safe_area(time_label, x_pct=48, y_pct=12, area="content")
+    place_in_safe_area(time_label, x_pct=50, y_pct=12, area="text")
 
     scene.add_fixed_in_frame_mobjects(time_label)
     scene.time_label = time_label
